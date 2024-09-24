@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.WindCameraMapper">
+
+    <resultMap type="WindCamera" id="WindCameraResult">
+        <result property="cameraId"    column="camera_id"    />
+        <result property="cameraName"    column="camera_name"    />
+        <result property="fanId"    column="fan_id"    />
+        <result property="fanName"    column="fan_name"    />
+        <result property="position"    column="position"    />
+        <result property="cameraType"    column="camera_type"    />
+        <result property="cameraUrl"    column="camera_url"    />
+    </resultMap>
+
+    <sql id="selectWindCameraVo">
+        select camera_id, camera_name, fan_id, fan_name, position, camera_type, camera_url from wind_camera
+    </sql>
+
+    <select id="selectWindCameraList" parameterType="WindCamera" resultMap="WindCameraResult">
+        <include refid="selectWindCameraVo"/>
+        <where>
+            <if test="fanId != null "> and fan_id = #{fanId}</if>
+             <if test="fanName != null "> and fan_name = #{fanName}</if>
+        </where>
+    </select>
+
+    <select id="selectWindCameraByCameraId" parameterType="Integer" resultMap="WindCameraResult">
+        <include refid="selectWindCameraVo"/>
+        where camera_id = #{cameraId}
+    </select>
+
+    <insert id="insertWindCamera" parameterType="WindCamera" useGeneratedKeys="true" keyProperty="cameraId">
+        insert into wind_camera
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cameraName != null and cameraName != ''">camera_name,</if>
+            <if test="fanId != null">fan_id,</if>
+            <if test="fanName != null">fan_name,</if>
+            <if test="position != null">position,</if>
+            <if test="cameraType != null and cameraType != ''">camera_type,</if>
+            <if test="cameraUrl != null and cameraUrl != ''">camera_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cameraName != null and cameraName != ''">#{cameraName},</if>
+            <if test="fanId != null">#{fanId},</if>
+            <if test="fanName != null">#{fanName},</if>
+            <if test="position != null">#{position},</if>
+            <if test="cameraType != null and cameraType != ''">#{cameraType},</if>
+            <if test="cameraUrl != null and cameraUrl != ''">#{cameraUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindCamera" parameterType="WindCamera">
+        update wind_camera
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cameraName != null and cameraName != ''">camera_name = #{cameraName},</if>
+            <if test="fanId != null">fan_id = #{fanId},</if>
+            <if test="fanName != null">fan_name = #{fanName},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="cameraType != null and cameraType != ''">camera_type = #{cameraType},</if>
+            <if test="cameraUrl != null and cameraUrl != ''">camera_url = #{cameraUrl},</if>
+        </trim>
+        where camera_id = #{cameraId}
+    </update>
+
+    <delete id="deleteWindCameraByCameraId" parameterType="Integer">
+        delete from wind_camera where camera_id = #{cameraId}
+    </delete>
+
+    <delete id="deleteWindCameraByCameraIds" parameterType="String">
+        delete from wind_camera where camera_id in
+        <foreach item="cameraId" collection="array" open="(" separator="," close=")">
+            #{cameraId}
+        </foreach>
+    </delete>
+</mapper>

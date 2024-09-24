@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.fanmonitor.mapper.WindPersonMapper">
+    
+    <resultMap type="WindPerson" id="WindPersonResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="imgPath"    column="imgPath"    />
+        <result property="imgPathList"    column="imgPathList"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectWindPersonVo">
+        SELECT p.id, p.name, p.age, p.sex, p.group_id, p.imgPath, p.imgPathList, p.created_at, p.updated_at, g.name as groupName
+        FROM wind_person p
+        LEFT JOIN wind_person_group g ON p.group_id = g.id
+    </sql>
+
+    <select id="selectWindPersonList" parameterType="WindPerson" resultMap="WindPersonResult">
+        <include refid="selectWindPersonVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWindPersonById" parameterType="Long" resultMap="WindPersonResult">
+        <include refid="selectWindPersonVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWindPerson" parameterType="WindPerson" useGeneratedKeys="true" keyProperty="id">
+        insert into wind_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="age != null">age,</if>
+            <if test="sex != null">sex,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="imgPath != null">imgPath,</if>
+            <if test="imgPathList != null">imgPathList,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="age != null">#{age},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="imgPath != null">#{imgPath},</if>
+            <if test="imgPathList != null">#{imgPathList},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindPerson" parameterType="WindPerson">
+        update wind_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="imgPath != null">imgPath = #{imgPath},</if>
+            <if test="imgPathList != null">imgPathList = #{imgPathList},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWindPersonById" parameterType="Long">
+        delete from wind_person where id = #{id}
+    </delete>
+
+    <delete id="deleteWindPersonByIds" parameterType="String">
+        delete from wind_person where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

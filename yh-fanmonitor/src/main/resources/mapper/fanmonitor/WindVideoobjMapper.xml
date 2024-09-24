@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.fanmonitor.mapper.WindVideoobjMapper">
+    
+    <resultMap type="WindVideoobj" id="WindVideoobjResult">
+        <result property="id"    column="id"    />
+        <result property="frameId"    column="frame_id"    />
+        <result property="videoPath"    column="video_path"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="detectTime"    column="detect_time"    />
+        <result property="saveVideo"    column="save_video"    />
+        <result property="timeStamp"    column="time_stamp"    />
+    </resultMap>
+
+    <sql id="selectWindVideoobjVo">
+        select v.id, v.frame_id, v.video_path, v.camera_id, v.detect_time, v.save_video, v.time_stamp, w.camera_name as cameraName
+        from wind_videoobj v
+        left join wind_camera w
+        on v.camera_id = w.camera_id
+    </sql>
+
+    <select id="selectWindVideoobjList" parameterType="WindVideoobj" resultMap="WindVideoobjResult">
+        <include refid="selectWindVideoobjVo"/>
+        <where>  
+            <if test="cameraId != null "> and camera_id = #{cameraId}</if>
+            <if test="saveVideo != null  and saveVideo != ''"> and save_video = #{saveVideo}</if>
+        </where>
+    </select>
+    
+    <select id="selectWindVideoobjById" parameterType="Long" resultMap="WindVideoobjResult">
+        <include refid="selectWindVideoobjVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWindVideoobj" parameterType="WindVideoobj" useGeneratedKeys="true" keyProperty="id">
+        insert into wind_videoobj
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="frameId != null">frame_id,</if>
+            <if test="videoPath != null">video_path,</if>
+            <if test="cameraId != null">camera_id,</if>
+            <if test="detectTime != null">detect_time,</if>
+            <if test="saveVideo != null">save_video,</if>
+            <if test="timeStamp != null">time_stamp,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="frameId != null">#{frameId},</if>
+            <if test="videoPath != null">#{videoPath},</if>
+            <if test="cameraId != null">#{cameraId},</if>
+            <if test="detectTime != null">#{detectTime},</if>
+            <if test="saveVideo != null">#{saveVideo},</if>
+            <if test="timeStamp != null">#{timeStamp},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindVideoobj" parameterType="WindVideoobj">
+        update wind_videoobj
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="frameId != null">frame_id = #{frameId},</if>
+            <if test="videoPath != null">video_path = #{videoPath},</if>
+            <if test="cameraId != null">camera_id = #{cameraId},</if>
+            <if test="detectTime != null">detect_time = #{detectTime},</if>
+            <if test="saveVideo != null">save_video = #{saveVideo},</if>
+            <if test="timeStamp != null">time_stamp = #{timeStamp},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWindVideoobjById" parameterType="Long">
+        delete from wind_videoobj where id = #{id}
+    </delete>
+
+    <delete id="deleteWindVideoobjByIds" parameterType="String">
+        delete from wind_videoobj where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.fanmonitor.mapper.WindPersonGroupMapper">
+    
+    <resultMap type="WindPersonGroup" id="WindPersonGroupResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectWindPersonGroupVo">
+        select id, name, type from wind_person_group
+    </sql>
+
+    <select id="selectWindPersonGroupList" parameterType="WindPersonGroup" resultMap="WindPersonGroupResult">
+        <include refid="selectWindPersonGroupVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectWindPersonGroupById" parameterType="Long" resultMap="WindPersonGroupResult">
+        <include refid="selectWindPersonGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWindPersonGroup" parameterType="WindPersonGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into wind_person_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindPersonGroup" parameterType="WindPersonGroup">
+        update wind_person_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWindPersonGroupById" parameterType="Long">
+        delete from wind_person_group where id = #{id}
+    </delete>
+
+    <delete id="deleteWindPersonGroupByIds" parameterType="String">
+        delete from wind_person_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

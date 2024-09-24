@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.WindLineMapper">
+
+    <resultMap type="WindLine" id="WindLineResult">
+        <result property="lineId"    column="line_id"    />
+        <result property="lineName"    column="line_name"    />
+        <result property="siteId"    column="site_id"    />
+        <result property="siteName"    column="site_name"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectWindLineVo">
+        select line_id, line_name, site_id, site_name, remark from wind_line
+    </sql>
+
+    <select id="selectWindLineList" parameterType="WindLine" resultMap="WindLineResult">
+        <include refid="selectWindLineVo"/>
+        <where>
+            <if test="lineName != null  and lineName != ''"> and line_name like concat('%', #{lineName}, '%')</if>
+            <if test="siteId != null "> and site_id = #{siteId}</if>
+            <if test="siteName != null "> and site_name = #{siteName}</if>
+        </where>
+    </select>
+
+    <select id="selectWindLineByLineId" parameterType="Integer" resultMap="WindLineResult">
+        <include refid="selectWindLineVo"/>
+        where line_id = #{lineId}
+    </select>
+
+    <insert id="insertWindLine" parameterType="WindLine" useGeneratedKeys="true" keyProperty="lineId">
+        insert into wind_line
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lineName != null and lineName != ''">line_name,</if>
+            <if test="siteId != null">site_id,</if>
+            <if test="siteName != null">site_name,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lineName != null and lineName != ''">#{lineName},</if>
+            <if test="siteId != null">#{siteId},</if>
+            <if test="siteName != null">#{siteName},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindLine" parameterType="WindLine">
+        update wind_line
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lineName != null and lineName != ''">line_name = #{lineName},</if>
+            <if test="siteId != null">site_id = #{siteId},</if>
+            <if test="siteName != null">site_name = #{siteName},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where line_id = #{lineId}
+    </update>
+
+    <delete id="deleteWindLineByLineId" parameterType="Integer">
+        delete from wind_line where line_id = #{lineId}
+    </delete>
+
+    <delete id="deleteWindLineByLineIds" parameterType="String">
+        delete from wind_line where line_id in
+        <foreach item="lineId" collection="array" open="(" separator="," close=")">
+            #{lineId}
+        </foreach>
+    </delete>
+</mapper>

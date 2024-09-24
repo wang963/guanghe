@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.WindComponentMapper">
+
+    <resultMap type="WindComponent" id="WindComponentResult">
+        <result property="componentId"    column="component_id"    />
+        <result property="fanId"    column="fan_id"    />
+        <result property="fanName"    column="fan_name"    />
+        <result property="componentName"    column="component_name"    />
+        <result property="componentFactory"    column="component_factory"    />
+        <result property="componentModel"    column="component_model"    />
+        <result property="temperatureUpper"    column="temperature_upper"    />
+        <result property="temperatureLower"    column="temperature_lower"    />
+        <result property="cimage"    column="cimage"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="cameraTag"    column="camera_tag"    />
+    </resultMap>
+
+    <sql id="selectWindComponentVo">
+       select component_id, fan_id, fan_name, component_name, component_factory, component_model, temperature_upper, temperature_lower, cimage, camera_id, camera_tag from wind_component
+    </sql>
+
+    <select id="selectWindComponentList" parameterType="WindComponent" resultMap="WindComponentResult">
+        <include refid="selectWindComponentVo"/>
+        <where>
+            <if test="fanId != null "> and fan_id = #{fanId}</if>
+            <if test="fanName != null  and fanName != ''"> and fan_name like concat('%', #{fanName}, '%')</if>
+            <if test="componentName != null  and componentName != ''"> and component_name like concat('%', #{componentName}, '%')</if>
+            <if test="componentFactory != null  and componentFactory != ''"> and component_factory = #{componentFactory}</if>
+            <if test="componentModel != null  and componentModel != ''"> and component_model = #{componentModel}</if>
+            <if test="temperatureUpper != null  and temperatureUpper != ''"> and temperature_upper = #{temperatureUpper}</if>
+            <if test="temperatureLower != null  and temperatureLower != ''"> and temperature_lower = #{temperatureLower}</if>
+            <if test="cimage != null  and cimage != ''"> and cimage = #{cimage}</if>
+            <if test="cameraId != null "> and camera_id = #{cameraId}</if>
+            <if test="cameraTag != null  and cameraTag != ''"> and camera_tag = #{cameraTag}</if>
+        </where>
+    </select>
+
+    <select id="selectWindComponentByComponentId" parameterType="Integer" resultMap="WindComponentResult">
+        <include refid="selectWindComponentVo"/>
+        where component_id = #{componentId}
+    </select>
+
+    <insert id="insertWindComponent" parameterType="WindComponent" useGeneratedKeys="true" keyProperty="componentId">
+        insert into wind_component
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fanId != null">fan_id,</if>
+            <if test="fanName != null">fan_name,</if>
+            <if test="componentName != null and componentName != ''">component_name,</if>
+            <if test="componentFactory != null">component_factory,</if>
+            <if test="componentModel != null">component_model,</if>
+            <if test="temperatureUpper != null">temperature_upper,</if>
+            <if test="temperatureLower != null">temperature_lower,</if>
+            <if test="cimage != null">cimage,</if>
+            <if test="cameraId != null">camera_id,</if>
+            <if test="cameraTag != null">camera_tag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fanId != null">#{fanId},</if>
+            <if test="fanName != null">#{fanName},</if>
+            <if test="componentName != null and componentName != ''">#{componentName},</if>
+            <if test="componentFactory != null">#{componentFactory},</if>
+            <if test="componentModel != null">#{componentModel},</if>
+            <if test="temperatureUpper != null">#{temperatureUpper},</if>
+            <if test="temperatureLower != null">#{temperatureLower},</if>
+            <if test="cimage != null">#{cimage},</if>
+            <if test="cameraId != null">#{cameraId},</if>
+            <if test="cameraTag != null">#{cameraTag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindComponent" parameterType="WindComponent">
+        update wind_component
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fanId != null">fan_id = #{fanId},</if>
+            <if test="fanName != null">fan_name = #{fanName},</if>
+            <if test="componentName != null and componentName != ''">component_name = #{componentName},</if>
+            <if test="componentFactory != null">component_factory = #{componentFactory},</if>
+            <if test="componentModel != null">component_model = #{componentModel},</if>
+            <if test="temperatureUpper != null">temperature_upper = #{temperatureUpper},</if>
+            <if test="temperatureLower != null">temperature_lower = #{temperatureLower},</if>
+            <if test="cimage != null">cimage = #{cimage},</if>
+            <if test="cameraId != null">camera_id = #{cameraId},</if>
+            <if test="cameraTag != null">camera_tag = #{cameraTag},</if>
+        </trim>
+        where component_id = #{componentId}
+    </update>
+
+    <delete id="deleteWindComponentByComponentId" parameterType="Integer">
+        delete from wind_component where component_id = #{componentId}
+    </delete>
+
+    <delete id="deleteWindComponentByComponentIds" parameterType="String">
+        delete from wind_component where component_id in
+        <foreach item="componentId" collection="array" open="(" separator="," close=")">
+            #{componentId}
+        </foreach>
+    </delete>
+</mapper>

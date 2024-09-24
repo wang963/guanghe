@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.fanmonitor.mapper.WindAlertsMapper">
+    
+    <resultMap type="WindAlerts" id="WindAlertsResult">
+        <result property="id"    column="id"    />
+        <result property="alertTime"    column="alert_time"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="camera"    column="camera"    />
+        <result property="camIpv4"    column="cam_ipv4"    />
+        <result property="algName"    column="alg_name"    />
+<!--        <result property="imgs"    column="imgs"    />-->
+    </resultMap>
+
+    <sql id="selectWindAlertsVo">
+        select id, alert_time, device_id, device_name, camera, cam_ipv4, alg_name, imgs, imgpath from wind_alerts
+    </sql>
+
+    <select id="selectWindAlertsList" parameterType="WindAlerts" resultMap="WindAlertsResult">
+        <include refid="selectWindAlertsVo"/>
+        <where>  
+            <if test="alertTime != null "> and alert_time = #{alertTime}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="camera != null  and camera != ''"> and camera = #{camera}</if>
+<!--            <if test="imgs != null  and imgs != ''"> and imgs = #{imgs}</if>-->
+        </where>
+    </select>
+    
+    <select id="selectWindAlertsById" parameterType="Long" resultMap="WindAlertsResult">
+        <include refid="selectWindAlertsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWindAlerts" parameterType="WindAlerts" useGeneratedKeys="true" keyProperty="id">
+        insert into wind_alerts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alertTime != null">alert_time,</if>
+            <if test="deviceId != null and deviceId != ''">device_id,</if>
+            <if test="deviceName != null and deviceName != ''">device_name,</if>
+            <if test="camera != null and camera != ''">camera,</if>
+            <if test="camIpv4 != null and camIpv4 != ''">cam_ipv4,</if>
+            <if test="algName != null and algName != ''">alg_name,</if>
+            <if test="imgpath != null and imgpath != ''">imgpath</if>
+<!--            <if test="imgs != null and imgs != ''">imgs,</if>-->
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alertTime != null">#{alertTime},</if>
+            <if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+            <if test="deviceName != null and deviceName != ''">#{deviceName},</if>
+            <if test="camera != null and camera != ''">#{camera},</if>
+            <if test="camIpv4 != null and camIpv4 != ''">#{camIpv4},</if>
+            <if test="algName != null and algName != ''">#{algName},</if>
+            <if test="imgpath != null and imgpath != ''">#{imgpath}</if>
+
+            <!--            <if test="imgs != null and imgs != ''">#{imgs},</if>-->
+         </trim>
+    </insert>
+
+    <update id="updateWindAlerts" parameterType="WindAlerts">
+        update wind_alerts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alertTime != null">alert_time = #{alertTime},</if>
+            <if test="deviceId != null and deviceId != ''">device_id = #{deviceId},</if>
+            <if test="deviceName != null and deviceName != ''">device_name = #{deviceName},</if>
+            <if test="camera != null and camera != ''">camera = #{camera},</if>
+            <if test="camIpv4 != null and camIpv4 != ''">cam_ipv4 = #{camIpv4},</if>
+            <if test="algName != null and algName != ''">alg_name = #{algName},</if>
+<!--            <if test="imgs != null and imgs != ''">imgs = #{imgs},</if>-->
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWindAlertsById" parameterType="Long">
+        delete from wind_alerts where id = #{id}
+    </delete>
+
+    <delete id="deleteWindAlertsByIds" parameterType="String">
+        delete from wind_alerts where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
