@@ -106,7 +106,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
      * 修改摄像机配置信息
      *
      * @param sysCamera 摄像机配置信息
-     * @return 结果1
+     * @return 结果2
      */
     @Override
     public int updateSysCamera(SysCamera sysCamera) {
