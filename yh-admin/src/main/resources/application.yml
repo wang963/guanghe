@@ -128,4 +128,8 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
+# 白光接口IP地址设置
+ip:
+  192:168:101:187
+
 

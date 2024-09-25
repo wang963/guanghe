@@ -3,6 +3,7 @@ package com.yh.fanmonitor.service.impl;
 import java.util.Arrays;
 import java.util.List;
 import com.yh.common.utils.DateUtils;
+import com.yh.fanmonitor.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yh.fanmonitor.mapper.SysStreamMapper;
@@ -25,9 +26,9 @@ public class SysStreamServiceImpl implements ISysStreamService
     private SysStreamMapper sysStreamMapper;
 
     //新增拉流接口
-    private static final String API_URL_ADD = "http://192.168.101.187/open-api/submitAddStream"; // 替换为实际的 API 地址
+    private static final String API_URL_ADD = Utils.getPrefixAddress() + "/submitAddStream"; // 替换为实际的 API 地址
     //
-    private static final String API_URL = "http://192.168.101.187/open-api/submitDeleteStream"; // 替换为实际的 API 地址
+    private static final String API_URL = Utils.getPrefixAddress() + "/submitDeleteStream"; // 替换为实际的 API 地址
 
 
     /**

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yh.fanmonitor.demo.StreamInfo;
 import com.yh.fanmonitor.domain.ApiResponse;
+import com.yh.fanmonitor.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -67,7 +68,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
 
         // 创建 RestTemplate 实例
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://192.168.101.187/open-api/submitAddStream"; // 替换为实际 URL
+        String url = Utils.getPrefixAddress() + "/submitAddStream"; // 替换为实际 URL
 
         // 发送 POST 请求
         ApiResponse response = restTemplate.postForObject(url, requestEntity, ApiResponse.class);
@@ -91,7 +92,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
      */
     @Override
     public int addAlgorithm(SysCamera sysCamera) {
-        String url = "http://192.168.101.187/open-api/addAlgorithmProperty";
+        String url = Utils.getPrefixAddress() + "/addAlgorithmProperty";
         RestTemplate restTemplate = new RestTemplate();
         ApiResponse response = restTemplate.postForObject(url, sysCamera, ApiResponse.class);
         if (response.getCode() == 20000) {
@@ -132,7 +133,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
      */
     @Override
     public int deleteSysCameraById(String id) {
-        String url = "http://192.168.101.187/open-api/submitDeleteStream";
+        String url = Utils.getPrefixAddress() + "/submitDeleteStream";
         RestTemplate restTemplate = new RestTemplate();
         SysCamera sysCamera = sysCameraMapper.selectSysCameraById(id);
         ApiResponse response = restTemplate.postForObject(url, sysCamera, ApiResponse.class);
