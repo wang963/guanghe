@@ -1,6 +1,9 @@
 package com.yh.fanmonitor.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yh.fanmonitor.mapper.WindAlertObjectsMapper;
@@ -40,7 +43,23 @@ public class WindAlertObjectsServiceImpl implements IWindAlertObjectsService
     @Override
     public List<WindAlertObjects> getWindAlertObjectsById(int alertId)
     {
-        return windAlertObjectsMapper.getWindAlertObjectsById(alertId);
+        List<WindAlertObjects> windAlertObjectsList = windAlertObjectsMapper.getWindAlertObjectsById(alertId);
+        for (WindAlertObjects windAlertObjects:windAlertObjectsList){
+            List<String> colorlist = Arrays.stream(
+                            windAlertObjects.getColorDba().substring(1, windAlertObjects.getColorDba().length() - 1)
+                                    .split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            windAlertObjects.setColor(colorlist);
+
+            List<String> list = Arrays.stream(
+                            windAlertObjects.getPositionDba().substring(1, windAlertObjects.getPositionDba().length() - 1)
+                                    .split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+            windAlertObjects.setPosition(list);
+        }
+        return windAlertObjectsList;
     }
 
     /**
