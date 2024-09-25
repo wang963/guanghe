@@ -16,8 +16,8 @@ import com.yh.common.annotation.Log;
 import com.yh.common.core.controller.BaseController;
 import com.yh.common.core.domain.AjaxResult;
 import com.yh.common.enums.BusinessType;
-import com.yh.fanmonitor.domain.WindAlarm;
-import com.yh.fanmonitor.service.IWindAlarmService;
+import com.yh.windnacelle.domain.WindAlarm;
+import com.yh.windnacelle.service.IWindAlarmService;
 import com.yh.common.utils.poi.ExcelUtil;
 import com.yh.common.core.page.TableDataInfo;
 

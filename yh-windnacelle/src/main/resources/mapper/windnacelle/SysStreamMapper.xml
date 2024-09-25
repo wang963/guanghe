@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.SysStreamMapper">
+
+    <resultMap type="SysStream" id="SysStreamResult">
+        <result property="id"    column="id"    />
+        <result property="ip"    column="ip"    />
+        <result property="app"    column="app"    />
+        <result property="stream"    column="stream"    />
+        <result property="streamUrl"    column="streamUrl"    />
+        <result property="code"    column="code"    />
+        <result property="msg"    column="msg"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSysStreamVo">
+        select id, ip, app, stream, streamUrl, code, msg, create_by, create_time, update_by, update_time, remark, status from sys_stream
+    </sql>
+
+    <select id="selectSysStreamList" parameterType="SysStream" resultMap="SysStreamResult">
+        <include refid="selectSysStreamVo"/>
+        <where>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="app != null  and app != ''"> and app = #{app}</if>
+            <if test="stream != null  and stream != ''"> and stream like concat('%', #{stream}, '%')</if>
+            <if test="streamUrl != null  and streamUrl != ''"> and streamUrl like concat('%', #{streamUrl}, '%')</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="msg != null  and msg != ''"> and msg = #{msg}</if>
+        </where>
+    </select>
+
+    <select id="selectSysStreamById" parameterType="Long" resultMap="SysStreamResult">
+        <include refid="selectSysStreamVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysStream" parameterType="SysStream" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_stream
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ip != null">ip,</if>
+            <if test="app != null">app,</if>
+            <if test="stream != null">stream,</if>
+            <if test="streamUrl != null">streamUrl,</if>
+            <if test="code != null">code,</if>
+            <if test="msg != null">msg,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ip != null">#{ip},</if>
+            <if test="app != null">#{app},</if>
+            <if test="stream != null">#{stream},</if>
+            <if test="streamUrl != null">#{streamUrl},</if>
+            <if test="code != null">#{code},</if>
+            <if test="msg != null">#{msg},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysStream" parameterType="SysStream">
+        update sys_stream
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="app != null">app = #{app},</if>
+            <if test="stream != null">stream = #{stream},</if>
+            <if test="streamUrl != null">streamUrl = #{streamUrl},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="msg != null">msg = #{msg},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysStreamById" parameterType="Long">
+        delete from sys_stream where id = #{id}
+    </delete>
+
+    <delete id="deleteSysStreamByIds" parameterType="String">
+        delete from sys_stream where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.SysCameraMapper">
+
+    <resultMap type="SysCamera" id="SysCameraResult">
+        <result property="id"    column="id"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="ip"    column="ip"    />
+        <result property="app"    column="app"    />
+        <result property="stream"    column="stream"    />
+        <result property="streamUrl"    column="stream_url"    />
+        <result property="algorithmId"    column="algorithm_id"    />
+        <result property="confidence"    column="confidence"    />
+        <result property="alarmIntervalSeconds"    column="alarm_interval_seconds"    />
+        <result property="alarmArea"    column="alarm_area"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="updatedAt"    column="updated_at"    />
+    </resultMap>
+
+    <sql id="selectSysCameraVo">
+        select s.id, s.camera_id, s.ip, s.app, s.stream, s.stream_url, s.algorithm_id, s.confidence, s.alarm_interval_seconds, s.alarm_area, s.created_at, s.updated_at, w.camera_name as cameraName
+        from sys_camera s
+        left join wind_camera w
+        on s.camera_id = w.camera_id
+    </sql>
+
+    <select id="selectSysCameraList" parameterType="SysCamera" resultMap="SysCameraResult">
+        <include refid="selectSysCameraVo"/>
+        <where>
+            <if test="cameraId != null  and cameraId != ''"> and camera_id = #{cameraId}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="app != null  and app != ''"> and app = #{app}</if>
+            <if test="stream != null  and stream != ''"> and stream = #{stream}</if>
+            <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+            <if test="algorithmId != null  and algorithmId != ''"> and algorithm_id = #{algorithmId}</if>
+            <if test="confidence != null "> and confidence = #{confidence}</if>
+            <if test="alarmIntervalSeconds != null "> and alarm_interval_seconds = #{alarmIntervalSeconds}</if>
+            <if test="alarmArea != null  and alarmArea != ''"> and alarm_area = #{alarmArea}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+            <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
+        </where>
+    </select>
+
+    <select id="selectSysCameraById" parameterType="String" resultMap="SysCameraResult">
+        <include refid="selectSysCameraVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysCamera" parameterType="SysCamera" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_camera
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cameraId != null and cameraId != ''">camera_id,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="app != null and app != ''">app,</if>
+            <if test="stream != null and stream != ''">stream,</if>
+            <if test="streamUrl != null and streamUrl != ''">stream_url,</if>
+            <if test="algorithmId != null">algorithm_id,</if>
+            <if test="confidence != null">confidence,</if>
+            <if test="alarmIntervalSeconds != null">alarm_interval_seconds,</if>
+            <if test="alarmArea != null">alarm_area,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cameraId != null and cameraId != ''">#{cameraId},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="app != null and app != ''">#{app},</if>
+            <if test="stream != null and stream != ''">#{stream},</if>
+            <if test="streamUrl != null and streamUrl != ''">#{streamUrl},</if>
+            <if test="algorithmId != null">#{algorithmId},</if>
+            <if test="confidence != null">#{confidence},</if>
+            <if test="alarmIntervalSeconds != null">#{alarmIntervalSeconds},</if>
+            <if test="alarmArea != null">#{alarmArea},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCamera" parameterType="SysCamera">
+        update sys_camera
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cameraId != null and cameraId != ''">camera_id = #{cameraId},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="app != null and app != ''">app = #{app},</if>
+            <if test="stream != null and stream != ''">stream = #{stream},</if>
+            <if test="streamUrl != null and streamUrl != ''">stream_url = #{streamUrl},</if>
+            <if test="algorithmId != null">algorithm_id = #{algorithmId},</if>
+            <if test="confidence != null">confidence = #{confidence},</if>
+            <if test="alarmIntervalSeconds != null">alarm_interval_seconds = #{alarmIntervalSeconds},</if>
+            <if test="alarmArea != null">alarm_area = #{alarmArea},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCameraById" parameterType="String">
+        delete from sys_camera where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCameraByIds" parameterType="String">
+        delete from sys_camera where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

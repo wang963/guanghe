@@ -8,10 +8,10 @@ spring:
             master:
                 #url: jdbc:mysql://140.249.200.162:13306/guanghe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 #username: root
-                #password: yhinfo@my2024
+                #password: totoro
                 url: jdbc:mysql://127.0.0.1:3306/guanghe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: 203578
+                password: totoro
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
