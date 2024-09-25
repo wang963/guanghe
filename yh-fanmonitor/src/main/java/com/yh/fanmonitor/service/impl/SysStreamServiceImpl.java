@@ -25,11 +25,8 @@ public class SysStreamServiceImpl implements ISysStreamService
     @Autowired
     private SysStreamMapper sysStreamMapper;
 
-    //新增拉流接口
-    private static final String API_URL_ADD = Utils.getPrefixAddress() + "/submitAddStream"; // 替换为实际的 API 地址
-    //
-    private static final String API_URL = Utils.getPrefixAddress() + "/submitDeleteStream"; // 替换为实际的 API 地址
-
+    @Autowired
+    private Utils utils;
 
     /**
      * 查询拉流配置
@@ -65,7 +62,7 @@ public class SysStreamServiceImpl implements ISysStreamService
     public int insertSysStream(SysStream sysStream)
     {
         RestTemplate restTemplate = new RestTemplate();
-        SysStream stream = restTemplate.postForObject(API_URL_ADD, sysStream, SysStream.class);
+        SysStream stream = restTemplate.postForObject(utils.getPrefixAddress() + "/submitAddStream", sysStream, SysStream.class);
         sysStream.setCode(stream.getCode());
         sysStream.setMsg(stream.getMsg());
         sysStream.setCreateTime(DateUtils.getNowDate());
@@ -112,7 +109,7 @@ public class SysStreamServiceImpl implements ISysStreamService
 
         // 调用远程接口
         RestTemplate restTemplate = new RestTemplate();
-        SysStream responseStream = restTemplate.postForObject(API_URL, sysStream, SysStream.class);
+        SysStream responseStream = restTemplate.postForObject(utils.getPrefixAddress() + "/submitDeleteStream", sysStream, SysStream.class);
         responseStream.setStatus("已删除");
         // 检查远程接口调用的结果
         if (responseStream == null) {

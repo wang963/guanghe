@@ -28,6 +28,9 @@ public class SysCameraServiceImpl implements ISysCameraService {
     @Autowired
     private SysCameraMapper sysCameraMapper;
 
+    @Autowired
+    private Utils utils;
+
     /**
      * 查询摄像机配置信息
      *
@@ -68,7 +71,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
 
         // 创建 RestTemplate 实例
         RestTemplate restTemplate = new RestTemplate();
-        String url = Utils.getPrefixAddress() + "/submitAddStream"; // 替换为实际 URL
+        String url = utils.getPrefixAddress() + "/submitAddStream"; // 替换为实际 URL
 
         // 发送 POST 请求
         ApiResponse response = restTemplate.postForObject(url, requestEntity, ApiResponse.class);
@@ -92,7 +95,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
      */
     @Override
     public int addAlgorithm(SysCamera sysCamera) {
-        String url = Utils.getPrefixAddress() + "/addAlgorithmProperty";
+        String url = utils.getPrefixAddress() + "/addAlgorithmProperty";
         RestTemplate restTemplate = new RestTemplate();
         ApiResponse response = restTemplate.postForObject(url, sysCamera, ApiResponse.class);
         if (response.getCode() == 20000) {
@@ -133,7 +136,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
      */
     @Override
     public int deleteSysCameraById(String id) {
-        String url = Utils.getPrefixAddress() + "/submitDeleteStream";
+        String url = utils.getPrefixAddress() + "/submitDeleteStream";
         RestTemplate restTemplate = new RestTemplate();
         SysCamera sysCamera = sysCameraMapper.selectSysCameraById(id);
         ApiResponse response = restTemplate.postForObject(url, sysCamera, ApiResponse.class);

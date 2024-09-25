@@ -1,5 +1,6 @@
 package com.yh.fanmonitor.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class Utils {
         return plainCameraIp;
     }
 
-    public static String getPrefixAddress() {
-        return "http://" + new Utils().getPlainCameraIp() + "/open-api";
+    public String getPrefixAddress() {
+        return "http://" + getPlainCameraIp() + "/open-api";
     }
 }
