@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yh.windnacelle.domain.ApiResponse;
 import com.yh.windnacelle.service.IWindPersonService;
+import com.yh.windnacelle.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yh.windnacelle.mapper.WindPersonMapper;
@@ -21,6 +22,9 @@ import org.springframework.web.client.RestTemplate;
 public class WindPersonServiceImpl implements IWindPersonService {
     @Autowired
     private WindPersonMapper windPersonMapper;
+
+    @Autowired
+    private Utils utils;
 
     /**
      * 查询人员信息
@@ -58,7 +62,7 @@ public class WindPersonServiceImpl implements IWindPersonService {
             return "数据库插入失败！";
         }
 //         插入成功后调用外部接口
-        String url = "POST /open-api/addAlgorithmProperty"; // 确保URL完整
+        String url = utils.getPrefixAddress() +"/addAlgorithmProperty"; // 确保URL完整
         RestTemplate restTemplate = new RestTemplate();
         try {
             // 调用外部接口

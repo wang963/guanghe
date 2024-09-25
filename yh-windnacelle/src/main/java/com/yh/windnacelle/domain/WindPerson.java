@@ -1,7 +1,10 @@
 package com.yh.windnacelle.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yh.windnacelle.demo.ImagePath;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.yh.common.annotation.Excel;
@@ -42,7 +45,7 @@ public class WindPerson extends BaseEntity
 
     /** 图片路径集合 */
     @Excel(name = "图片路径集合")
-    private String imgPathList;
+    private List<ImagePath> imgPathList;
 
     /** $column.columnComment */
     private Date createdAt;
@@ -115,12 +118,12 @@ public class WindPerson extends BaseEntity
     {
         return imgPath;
     }
-    public void setImgPathList(String imgPathList)
+    public void setImgPathList(List<ImagePath> imgPathList)
     {
         this.imgPathList = imgPathList;
     }
 
-    public String getImgPathList()
+    public List<ImagePath> getImgPathList()
     {
         return imgPathList;
     }

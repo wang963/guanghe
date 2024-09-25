@@ -3,6 +3,7 @@ package com.yh.windnacelle.service.impl;
 import java.util.List;
 
 import com.yh.windnacelle.domain.ApiResponse;
+import com.yh.windnacelle.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yh.windnacelle.mapper.WindPersonGroupMapper;
@@ -22,6 +23,9 @@ import org.springframework.web.client.RestTemplate;
 public class WindPersonGroupServiceImpl implements IWindPersonGroupService {
     @Autowired
     private WindPersonGroupMapper windPersonGroupMapper;
+
+    @Autowired
+    private Utils utils;
 
     /**
      * 查询人员分组管理
@@ -60,7 +64,7 @@ public class WindPersonGroupServiceImpl implements IWindPersonGroupService {
             return "数据库插入失败！";
         }
         // 插入成功后调用外部接口
-        String url = "http://localhost:8080/open-api/addAlgorithmProperty"; // 确保URL完整
+        String url = utils.getPrefixAddress() + "/addAlgorithmProperty"; // 确保URL完整
         RestTemplate restTemplate = new RestTemplate();
         try {
             // 调用外部接口
