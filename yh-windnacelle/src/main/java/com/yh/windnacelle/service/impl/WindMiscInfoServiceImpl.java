@@ -1,11 +1,19 @@
 package com.yh.windnacelle.service.impl;
 
 import java.util.List;
+
+import com.yh.windnacelle.domain.ApiResponse;
+import com.yh.windnacelle.domain.SysCamera;
+import com.yh.windnacelle.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import com.yh.windnacelle.mapper.WindMiscInfoMapper;
 import com.yh.windnacelle.domain.WindMiscInfo;
 import com.yh.windnacelle.service.IWindMiscInfoService;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 外发告警地址配置Service业务层处理
@@ -18,6 +26,9 @@ public class WindMiscInfoServiceImpl implements IWindMiscInfoService
 {
     @Autowired
     private WindMiscInfoMapper windMiscInfoMapper;
+
+    @Autowired
+    private Utils utils;
 
     /**
      * 查询外发告警地址配置
@@ -52,6 +63,21 @@ public class WindMiscInfoServiceImpl implements IWindMiscInfoService
     @Override
     public int insertWindMiscInfo(WindMiscInfo windMiscInfo)
     {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // 创建请求实体，使用 SysCamera 对象而不是 JSON 字符串
+        HttpEntity<WindMiscInfo> requestEntity = new HttpEntity<>(windMiscInfo, headers);
+
+        // 创建 RestTemplate 实例
+        RestTemplate restTemplate = new RestTemplate();
+        String url = utils.getPrefixAddress() + "/updateMiscInfo"; // 替换为实际 URL
+        // 发送 POST 请求
+        ApiResponse response = restTemplate.postForObject(url, requestEntity, ApiResponse.class);
+
+        if (response.getCode() != 2000){
+            return 0;
+        }
         return windMiscInfoMapper.insertWindMiscInfo(windMiscInfo);
     }
 
