@@ -3,6 +3,8 @@ package com.yh.windnacelle.service.impl;
 import java.util.List;
 
 import com.yh.windnacelle.domain.ApiResponse;
+import com.yh.windnacelle.domain.WindCamera;
+import com.yh.windnacelle.mapper.WindCameraMapper;
 import com.yh.windnacelle.utils.Utils;
 import com.yh.windnacelle.mapper.SysCameraMapper;
 import com.yh.windnacelle.service.ISysCameraService;
@@ -24,6 +26,9 @@ import org.springframework.web.client.RestTemplate;
 public class SysCameraServiceImpl implements ISysCameraService {
     @Autowired
     private SysCameraMapper sysCameraMapper;
+
+    @Autowired
+    private WindCameraMapper windCameraMapper;
 
     @Autowired
     private Utils utils;
@@ -59,6 +64,9 @@ public class SysCameraServiceImpl implements ISysCameraService {
     @Override
     public int insertSysCamera(SysCamera sysCamera){
 
+        //获取旧id
+        String oldId = sysCamera.getCameraId();
+
         // 创建请求头
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -81,6 +89,7 @@ public class SysCameraServiceImpl implements ISysCameraService {
             sysCamera.setAddStreamMsg(response.getAddStreamMsg());
             sysCamera.setMsg(response.getMsg());
             System.out.println(response.getCameraId());
+            windCameraMapper.updateWindCameraId(sysCamera.getCameraId(),oldId);
             return sysCameraMapper.insertSysCamera(sysCamera);
         }
         return 0;

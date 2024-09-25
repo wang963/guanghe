@@ -2,6 +2,7 @@ package com.yh.windnacelle.mapper;
 
 import java.util.List;
 import com.yh.windnacelle.domain.WindCamera;
+import org.springframework.data.repository.query.Param;
 
 /**
  * 视频维护Mapper接口
@@ -58,4 +59,6 @@ public interface WindCameraMapper
      * @return 结果
      */
     public int deleteWindCameraByCameraIds(Integer[] cameraIds);
+
+    public int updateWindCameraId(@Param("currentId") String currentId, @Param("newId") String newId);
 }

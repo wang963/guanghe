@@ -1,5 +1,8 @@
 package com.yh.windnacelle.service.impl;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import com.yh.windnacelle.mapper.WindFanMapper;
@@ -57,6 +60,7 @@ public class WindCameraServiceImpl implements IWindCameraService
     public int insertWindCamera(WindCamera windCamera)
     {
         windCamera.setFanName(windFanMapper.selectWindFanByFanId(windCamera.getFanId()).getFanName());
+        windCamera.setCameraId(LocalDateTime.now().toString());
         return windCameraMapper.insertWindCamera(windCamera);
     }
 

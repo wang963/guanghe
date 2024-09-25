@@ -16,7 +16,7 @@ public class WindCamera extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Integer cameraId;
+    private String cameraId;
 
     /** 监控编号 */
     @Excel(name = "监控编号")
@@ -42,12 +42,12 @@ public class WindCamera extends BaseEntity
     @Excel(name = "视频URL")
     private String cameraUrl;
 
-    public void setCameraId(Integer cameraId)
+    public void setCameraId(String cameraId)
     {
         this.cameraId = cameraId;
     }
 
-    public Integer getCameraId()
+    public String getCameraId()
     {
         return cameraId;
     }

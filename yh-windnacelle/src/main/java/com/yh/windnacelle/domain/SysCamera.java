@@ -21,7 +21,7 @@ public class SysCamera extends BaseEntity {
     /**
      * ID
      */
-    private String id;
+    private int id;
 
     /**
      * 监控id
@@ -154,11 +154,11 @@ public class SysCamera extends BaseEntity {
         this.status = status;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
