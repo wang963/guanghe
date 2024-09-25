@@ -45,6 +45,11 @@
         where id = #{id}
     </select>
 
+    <select id="getWindAlertObjectsById" parameterType="int" resultMap="WindAlertObjectsResult">
+        <include refid="selectWindAlertObjectsVo"/>
+        where alert_id = #{alertId}
+    </select>
+
     <insert id="insertWindAlertObjects" parameterType="WindAlertObjects" useGeneratedKeys="true" keyProperty="id">
         insert into wind_alert_objects
         <trim prefix="(" suffix=")" suffixOverrides=",">

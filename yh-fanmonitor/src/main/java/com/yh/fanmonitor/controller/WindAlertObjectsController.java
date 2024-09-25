@@ -47,6 +47,17 @@ public class WindAlertObjectsController extends BaseController
     }
 
     /**
+     * 根据告警id查询告警详细信息列表
+     */
+    @PreAuthorize("@ss.hasPermi('fanmonitor:objects:list')")
+    @GetMapping("/listByAlertId/{alertId}")
+    public TableDataInfo listByAlertId(@PathVariable("alertId") int alertId)
+    {
+        List<WindAlertObjects> list = windAlertObjectsService.getWindAlertObjectsById(alertId);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出告警详细信息列表
      */
     @PreAuthorize("@ss.hasPermi('fanmonitor:objects:export')")

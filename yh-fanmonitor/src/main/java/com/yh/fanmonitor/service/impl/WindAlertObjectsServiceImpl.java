@@ -32,6 +32,18 @@ public class WindAlertObjectsServiceImpl implements IWindAlertObjectsService
     }
 
     /**
+     * 查询告警详细信息
+     *
+     * @param alertId 告警Id
+     * @return 告警信息集合
+     */
+    @Override
+    public List<WindAlertObjects> getWindAlertObjectsById(int alertId)
+    {
+        return windAlertObjectsMapper.getWindAlertObjectsById(alertId);
+    }
+
+    /**
      * 查询告警详细信息列表
      *
      * @param windAlertObjects 告警详细信息
