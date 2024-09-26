@@ -3,8 +3,7 @@ package com.yh.windnacelle.domain;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yh.windnacelle.demo.ImagePath;
+import com.yh.windnacelle.filter.ImagePath;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.yh.common.annotation.Excel;
@@ -21,7 +20,7 @@ public class WindPerson extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** $column.columnComment */
-    private Long id;
+    private int id;
 
     /** 姓名 */
     @Excel(name = "姓名")
@@ -64,12 +63,12 @@ public class WindPerson extends BaseEntity
         this.groupName = groupName;
     }
 
-    public void setId(Long id)
+    public void setId(int id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public int getId()
     {
         return id;
     }

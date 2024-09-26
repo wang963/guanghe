@@ -33,7 +33,7 @@ public interface WindPersonMapper
      * @param windPerson 人员信息
      * @return 结果
      */
-    public int insertWindPerson(WindPerson windPerson);
+    public void insertWindPerson(WindPerson windPerson);
 
     /**
      * 修改人员信息

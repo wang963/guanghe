@@ -1,24 +1,17 @@
 package com.yh.windnacelle.domain;
 
+import com.yh.windnacelle.demo.CameraData;
+
 import java.util.List;
 
 public class VideoDetectionResponse {
-    private List<Timestamp> timestamps;
-    private List<WindDetectedObjects> windDetectedObjectsList;
+    private List<List<CameraData>> cameraDataList;
 
-    public List<Timestamp> getTimestamps() {
-        return timestamps;
+    public List<List<CameraData>> getCameraDataList() {
+        return cameraDataList;
     }
 
-    public void setTimestamps(List<Timestamp> timestamps) {
-        this.timestamps = timestamps;
-    }
-
-    public List<WindDetectedObjects> getWindDetectedObjectsList() {
-        return windDetectedObjectsList;
-    }
-
-    public void setWindDetectedObjectsList(List<WindDetectedObjects> windDetectedObjectsList) {
-        this.windDetectedObjectsList = windDetectedObjectsList;
+    public void setCameraDataList(List<List<CameraData>> cameraDataList) {
+        this.cameraDataList = cameraDataList;
     }
 }

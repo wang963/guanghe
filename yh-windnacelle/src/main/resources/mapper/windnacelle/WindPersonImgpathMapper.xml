@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.windnacelle.mapper.WindPersonImgpathMapper">
+
+    <resultMap type="WindPersonImgpath" id="WindPersonImgpathResult">
+        <result property="id"    column="id"    />
+        <result property="personId"    column="person_id"    />
+        <result property="faceVector"    column="faceVector"    />
+        <result property="faceValid"    column="faceValid"    />
+        <result property="asCover"    column="asCover"    />
+        <result property="imgPath"    column="imgPath"    />
+        <result property="url"    column="url"    />
+    </resultMap>
+
+    <sql id="selectWindPersonImgpathVo">
+        select id, person_id, faceVector, faceValid, asCover, imgPath, url from wind_person_imgpath
+    </sql>
+
+    <select id="selectWindPersonImgpathList" parameterType="WindPersonImgpath" resultMap="WindPersonImgpathResult">
+        <include refid="selectWindPersonImgpathVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectWindPersonImgpathById" parameterType="int" resultMap="WindPersonImgpathResult">
+        <include refid="selectWindPersonImgpathVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectWindPersonImgpathByPersonId" parameterType="int" resultMap="WindPersonImgpathResult">
+        <include refid="selectWindPersonImgpathVo"/>
+        where person_id = #{personId}
+    </select>
+
+    <insert id="insertWindPersonImgpath" parameterType="WindPersonImgpath" useGeneratedKeys="true" keyProperty="id">
+        insert into wind_person_imgpath
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personId != null">person_id,</if>
+            <if test="faceVector != null">faceVector,</if>
+            <if test="faceValid != null">faceValid,</if>
+            <if test="asCover != null">asCover,</if>
+            <if test="imgPath != null">imgPath,</if>
+            <if test="url != null">url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personId != null">#{personId},</if>
+            <if test="faceVector != null">#{faceVector},</if>
+            <if test="faceValid != null">#{faceValid},</if>
+            <if test="asCover != null">#{asCover},</if>
+            <if test="imgPath != null">#{imgPath},</if>
+            <if test="url != null">#{url},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWindPersonImgpath" parameterType="WindPersonImgpath">
+        update wind_person_imgpath
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personId != null">person_id = #{personId},</if>
+            <if test="faceVector != null">faceVector = #{faceVector},</if>
+            <if test="faceValid != null">faceValid = #{faceValid},</if>
+            <if test="asCover != null">asCover = #{asCover},</if>
+            <if test="imgPath != null">imgPath = #{imgPath},</if>
+            <if test="url != null">url = #{url},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWindPersonImgpathById" parameterType="Long">
+        delete from wind_person_imgpath where id = #{id}
+    </delete>
+
+    <delete id="deleteWindPersonImgpathByIds" parameterType="String">
+        delete from wind_person_imgpath where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

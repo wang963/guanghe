@@ -1,8 +1,14 @@
 package com.yh.windnacelle.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.yh.windnacelle.filter.ImagePath;
+import com.yh.windnacelle.filter.Raw;
+import com.yh.windnacelle.filter.Response;
 import com.yh.windnacelle.domain.ApiResponse;
+import com.yh.windnacelle.domain.WindPersonImgpath;
+import com.yh.windnacelle.mapper.WindPersonImgpathMapper;
 import com.yh.windnacelle.service.IWindPersonService;
 import com.yh.windnacelle.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,9 @@ import org.springframework.web.client.RestTemplate;
 public class WindPersonServiceImpl implements IWindPersonService {
     @Autowired
     private WindPersonMapper windPersonMapper;
+
+    @Autowired
+    private WindPersonImgpathMapper windPersonImgpathMapper;
 
     @Autowired
     private Utils utils;
@@ -45,7 +54,27 @@ public class WindPersonServiceImpl implements IWindPersonService {
      */
     @Override
     public List<WindPerson> selectWindPersonList(WindPerson windPerson) {
-        return windPersonMapper.selectWindPersonList(windPerson);
+        List<WindPerson> windPeople = windPersonMapper.selectWindPersonList(windPerson);
+        for (WindPerson windPerson1:windPeople){
+            List<ImagePath> imagePaths = new ArrayList<>();
+            List<WindPersonImgpath> windPersonImgpaths = windPersonImgpathMapper.selectWindPersonImgpathByPersonId(windPerson1.getId());
+            for (WindPersonImgpath windPersonImgpath:windPersonImgpaths){
+                ImagePath imagePath = new ImagePath();
+                Raw raw = new Raw();
+                Response response = new Response();
+                raw.setFaceVector(windPersonImgpath.getFaceVector());
+                raw.setFaceValid(windPersonImgpath.getFaceValid());
+                raw.setAsCover(windPersonImgpath.getAsCover());
+                response.setImgPath(windPersonImgpath.getImgPath());
+                imagePath.setRaw(raw);
+                imagePath.setResponse(response);
+                imagePath.setUrl(windPersonImgpath.getUrl());
+                imagePath.setId(windPersonImgpath.getId());
+                imagePaths.add(imagePath);
+            }
+            windPerson1.setImgPathList(imagePaths);
+        }
+        return windPeople;
     }
 
     /**
@@ -57,10 +86,19 @@ public class WindPersonServiceImpl implements IWindPersonService {
     @Override
     public String insertWindPerson(WindPerson windPerson) {
         //先执行插入操作
-        int x = windPersonMapper.insertWindPerson(windPerson);
-        if (x <= 0) {
-            return "数据库插入失败！";
+        windPersonMapper.insertWindPerson(windPerson);
+        for (ImagePath imagePath:windPerson.getImgPathList()){
+            WindPersonImgpath windPersonImgpath = new WindPersonImgpath();
+            windPersonImgpath.setPersonId(windPerson.getId());
+            windPersonImgpath.setFaceVector(imagePath.getRaw().getFaceVector());
+            windPersonImgpath.setFaceValid(imagePath.getRaw().isFaceValid());
+            windPersonImgpath.setAsCover(imagePath.getRaw().isAsCover());
+            windPersonImgpath.setImgPath(imagePath.getResponse().getImgPath());
+            windPersonImgpath.setId(imagePath.getId());
+            windPersonImgpath.setUrl(imagePath.getUrl());
+            windPersonImgpathMapper.insertWindPersonImgpath(windPersonImgpath);
         }
+
 //         插入成功后调用外部接口
         String url = utils.getPrefixAddress() +"/addAlgorithmProperty"; // 确保URL完整
         RestTemplate restTemplate = new RestTemplate();

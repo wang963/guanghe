@@ -2,6 +2,8 @@ package com.yh.windnacelle.service.impl;
 
 import java.util.List;
 
+import com.yh.windnacelle.demo.CameraData;
+import com.yh.windnacelle.demo.DetectedObject;
 import com.yh.windnacelle.domain.VideoDetectionResponse;
 import com.yh.windnacelle.domain.WindDetectedObjects;
 import com.yh.windnacelle.mapper.WindDetectedObjectsMapper;
@@ -63,9 +65,16 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
         String url = "http://47.94.239.117:80/videoObjDetection/None/Images";
         RestTemplate restTemplate = new RestTemplate();
         VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoobj, VideoDetectionResponse.class);
-        windVideoobj.setTimeStamp(videoDetectionResponse.getTimestamps().toString());
-        List<WindDetectedObjects> windDetectedObjectsList = videoDetectionResponse.getWindDetectedObjectsList();
-        windDetectedObjectsMapper.insertWindDetectedObjectsBatch(windDetectedObjectsList);
+        List<List<CameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();
+        windVideoobj.setTimeStamp(cameraDataList.get(0).get(0).getTime_stamp().toString());
+        List<CameraData> cameraData = cameraDataList.remove(0);
+        for (CameraData cameraData1:cameraData){
+            List<DetectedObject> objects = cameraData1.getObjects();
+        }
+
+
+//        List<WindDetectedObjects> windDetectedObjectsList = videoDetectionResponse.getWindDetectedObjectsList();
+//        windDetectedObjectsMapper.insertWindDetectedObjectsBatch(windDetectedObjectsList);
         return windVideoobjMapper.insertWindVideoobj(windVideoobj);
     }
 
