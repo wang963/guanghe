@@ -12,14 +12,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ymin"    column="ymin"    />
         <result property="ymax"    column="ymax"    />
         <result property="confidence"    column="confidence"    />
-        <result property="class"    column="class"    />
+        <result property="clazz"    column="clazz"    />
         <result property="name"    column="name"    />
         <result property="createdAt"    column="created_at"    />
         <result property="updatedAt"    column="updated_at"    />
     </resultMap>
 
     <sql id="selectWindDetectedObjectsVo">
-        select id, image_id, xmin, xmax, ymin, ymax, confidence, class, name, created_at, updated_at from wind_detected_objects
+        select id, image_id, xmin, xmax, ymin, ymax, confidence, clazz, name, created_at, updated_at from wind_detected_objects
     </sql>
 
     <select id="selectWindDetectedObjectsList" parameterType="WindDetectedObjects" resultMap="WindDetectedObjectsResult">
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ymin != null "> and ymin = #{ymin}</if>
             <if test="ymax != null "> and ymax = #{ymax}</if>
             <if test="confidence != null "> and confidence = #{confidence}</if>
-            <if test="class != null "> and class = #{class}</if>
+            <if test="clazz != null "> and clazz = #{clazz}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="createdAt != null "> and created_at = #{createdAt}</if>
             <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ymin != null">ymin,</if>
             <if test="ymax != null">ymax,</if>
             <if test="confidence != null">confidence,</if>
-            <if test="class != null">class,</if>
+            <if test="clazz != null">clazz,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="createdAt != null">created_at,</if>
             <if test="updatedAt != null">updated_at,</if>
@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ymin != null">#{ymin},</if>
             <if test="ymax != null">#{ymax},</if>
             <if test="confidence != null">#{confidence},</if>
-            <if test="class != null">#{class},</if>
+            <if test="clazz != null">#{clazz},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="createdAt != null">#{createdAt},</if>
             <if test="updatedAt != null">#{updatedAt},</if>
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ymin != null">ymin = #{ymin},</if>
             <if test="ymax != null">ymax = #{ymax},</if>
             <if test="confidence != null">confidence = #{confidence},</if>
-            <if test="class != null">class = #{class},</if>
+            <if test="clazz != null">clazz = #{clazz},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="createdAt != null">created_at = #{createdAt},</if>
             <if test="updatedAt != null">updated_at = #{updatedAt},</if>
@@ -99,11 +99,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <insert id="insertWindDetectedObjectsBatch">
-        INSERT INTO wind_detected_objects (image_id, xmin, xmax, ymin, ymax, confidence, class, name)
+    <insert id="insertWindDetectedObjectsBatch" parameterType="list">
+        INSERT INTO wind_detected_objects (image_id, xmin, xmax, ymin, ymax, confidence, clazz, name)
         VALUES
-        <foreach collection="objects" item="object" separator=",">
-            (#{object.imageId}, #{object.xmin}, #{object.xmax}, #{object.ymin}, #{object.ymax}, #{object.confidence}, #{object.classId}, #{object.name})
+        <foreach collection="list" item="object" separator=",">
+            (#{object.imageId}, #{object.xmin}, #{object.xmax}, #{object.ymin}, #{object.ymax}, #{object.confidence}, #{object.clazz}, #{object.name})
         </foreach>
     </insert>
 </mapper>

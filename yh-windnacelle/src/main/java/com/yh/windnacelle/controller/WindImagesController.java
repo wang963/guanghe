@@ -113,9 +113,9 @@ public class WindImagesController extends BaseController
      * 调用图片检测接口
      */
     @PreAuthorize("@ss.hasPermi('fanmonitor:images:detection')")
-    @PostMapping("/detection")
-    public AjaxResult detection(@RequestBody Long[] ids){
+    @GetMapping("/detection")
+    public AjaxResult detection(Long[] ids, String enhance_Type){
         List<WindImages> windImages = windImagesService.getWindImagesByIds(ids);
-        return toAjax(windImagesService.detection(windImages));
+        return toAjax(windImagesService.detection(windImages, enhance_Type));
     }
 }

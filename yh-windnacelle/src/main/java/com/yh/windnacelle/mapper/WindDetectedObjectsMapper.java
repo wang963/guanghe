@@ -59,5 +59,5 @@ public interface WindDetectedObjectsMapper
      */
     public int deleteWindDetectedObjectsByIds(Long[] ids);
 
-    void insertWindDetectedObjectsBatch(List<WindDetectedObjects> allDetectedObjects);
+    int insertWindDetectedObjectsBatch(List<WindDetectedObjects> detectedObjectsList);
 }

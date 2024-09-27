@@ -64,39 +64,7 @@ public class WindImagesServiceImpl implements IWindImagesService
     @Transactional
     public int insertWindImages(WindImages windImages)
     {
-        windImagesMapper.insertWindImages(windImages);
-        String url = "http://47.94.239.117:80/imgObjDetection/None/Images";
-        RestTemplate restTemplate = new RestTemplate();
-        // 发送请求并获取响应
-        DetectionResponse detectionResponse;
-        try {
-            detectionResponse = restTemplate.postForObject(url, windImages, DetectionResponse.class);
-        } catch (Exception e) {
-            // 记录错误日志
-            throw new RuntimeException(e);
-        }
-        if (detectionResponse == null || detectionResponse.getWindImagesList() == null) {
-            return -1; // 或者其他适当的错误代码
-        }
-        List<WindDetectedObjects> allDetectedObjects = new ArrayList<>();
-        // 遍历响应并准备插入数据
-        for (WindImages images : detectionResponse.getWindImagesList()) {
-            for (WindDetectedObjects windDetectedObjects : images.getWindDetectedObjectsList()) {
-                windDetectedObjects.setImageId(images.getId());
-                allDetectedObjects.add(windDetectedObjects);
-            }
-        }
-        // 批量插入检测到的对象
-        if (!allDetectedObjects.isEmpty()) {
-            windDetectedObjectsMapper.insertWindDetectedObjectsBatch(allDetectedObjects);
-        }
-
-
-
-
-
-
-        return 0;
+        return windImagesMapper.insertWindImages(windImages);
     }
 
     /**
@@ -139,41 +107,82 @@ public class WindImagesServiceImpl implements IWindImagesService
      * 检测图片信息
      *
      * @param windImages 图片信息
+     * @param enhance_Type 增强类型
      * @return 结果
      */
     @Override
     @Transactional
-    public int detection(List<WindImages> windImages) {
-        String url = "http://47.94.239.117:80/imgObjDetection/None/Images";
+    public int detection(List<WindImages> windImagesList, String enhance_Type) {
+        String url = "http://47.94.239.117:80/imgObjDetection/" + enhance_Type + "/Bboxs";
         RestTemplate restTemplate = new RestTemplate();
         // 发送请求并获取响应
         DetectionResponse detectionResponse;
         try {
-            detectionResponse = restTemplate.postForObject(url, windImages, DetectionResponse.class);
+            //detectionResponse = restTemplate.postForObject(url, windImagesList, DetectionResponse.class);
+            detectionResponse = parseDetectionResponse();
         } catch (Exception e) {
+            e.printStackTrace();
             // 记录错误日志
             return -1; // 或者其他适当的错误代码
         }
         if (detectionResponse == null || detectionResponse.getWindImagesList() == null) {
             return -1; // 或者其他适当的错误代码
         }
-        List<WindDetectedObjects> allDetectedObjects = new ArrayList<>();
+        List<WindDetectedObjects> detectedObjectsList = new ArrayList<>();
+        List<Long> imageIds = new ArrayList<>();
         // 遍历响应并准备插入数据
         for (WindImages images : detectionResponse.getWindImagesList()) {
+            Long imageId = windImagesMapper.getWindImagesIdByName(images.getImageName());
+            imageIds.add(imageId);
+
             for (WindDetectedObjects windDetectedObjects : images.getWindDetectedObjectsList()) {
-                windDetectedObjects.setImageId(images.getId());
-                allDetectedObjects.add(windDetectedObjects);
+                windDetectedObjects.setImageId(imageId);
+                detectedObjectsList.add(windDetectedObjects);
             }
         }
         // 批量插入检测到的对象
-        if (!allDetectedObjects.isEmpty()) {
-            windDetectedObjectsMapper.insertWindDetectedObjectsBatch(allDetectedObjects);
+        if (!detectedObjectsList.isEmpty()) {
+            windImagesMapper.deleteWindDetectedObjectsByIds(imageIds);
+            return windDetectedObjectsMapper.insertWindDetectedObjectsBatch(detectedObjectsList);
         }
-        return 0;
+        return -1;
     }
 
     @Override
     public List<WindImages> getWindImagesByIds(Long[] ids) {
         return windImagesMapper.getWindImagesByIds(ids);
     }
+
+    /*
+    * 产生临时测试用的假数据，以后删除
+    */
+    private DetectionResponse parseDetectionResponse() {
+        DetectionResponse response = new DetectionResponse();
+        List<WindImages> windImagesList = new ArrayList<>();
+        WindImages windImages = new WindImages();
+
+        windImages.setImageName("机组内部1");
+        windImages.setWindDetectedObjectsList(parseWindDetectedObjectsList());
+
+        windImagesList.add(windImages);
+        response.setWindImagesList(windImagesList);
+        return response;
+    }
+
+    private List<WindDetectedObjects> parseWindDetectedObjectsList() {
+        List<WindDetectedObjects> windDetectedObjectsList = new ArrayList<>();
+
+        WindDetectedObjects objects = new WindDetectedObjects();
+        objects.setName("Generator");
+        objects.setConfidence(0.432516);
+        objects.setXmin(150L);
+        objects.setXmax(200L);
+        objects.setYmin(144L);
+        objects.setYmax(256L);
+        objects.setClazz(2315L);
+        windDetectedObjectsList.add(objects);
+
+        return windDetectedObjectsList;
+    }
+
 }

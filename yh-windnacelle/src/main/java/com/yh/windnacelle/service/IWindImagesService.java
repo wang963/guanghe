@@ -63,9 +63,10 @@ public interface IWindImagesService
      * 检测图片信息
      *
      * @param windImages 图片信息
+     * @param enhance_Type
      * @return 结果
      */
-    public int detection(List<WindImages> windImages);
+    public int detection(List<WindImages> windImages, String enhance_Type);
 
     /**
      * 根据ids获取图片信息

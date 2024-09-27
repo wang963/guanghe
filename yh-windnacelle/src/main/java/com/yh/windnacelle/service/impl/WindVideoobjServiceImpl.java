@@ -5,7 +5,6 @@ import java.util.List;
 import com.yh.windnacelle.demo.CameraData;
 import com.yh.windnacelle.demo.DetectedObject;
 import com.yh.windnacelle.domain.VideoDetectionResponse;
-import com.yh.windnacelle.domain.WindDetectedObjects;
 import com.yh.windnacelle.mapper.WindDetectedObjectsMapper;
 import com.yh.windnacelle.mapper.WindVideoobjMapper;
 import org.springframework.beans.factory.annotation.Autowired;

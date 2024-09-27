@@ -61,4 +61,7 @@ public interface WindImagesMapper
 
     public List<WindImages> getWindImagesByIds(Long[] ids);
 
+    Long getWindImagesIdByName(String imageName);
+
+    int deleteWindDetectedObjectsByIds(List<Long> imageIds);
 }

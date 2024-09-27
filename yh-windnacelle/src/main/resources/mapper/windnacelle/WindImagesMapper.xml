@@ -75,5 +75,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </foreach>
     </select>
 
+    <select id="getWindImagesIdByName" parameterType="String" resultType="Long">
+        select id from wind_images where image_name = #{imageName}
+    </select>
+
+    <delete id="deleteWindDetectedObjectsByIds" parameterType="list">
+        delete from wind_detected_objects where image_id in
+        <foreach collection="list" item="image_id" open="(" separator="," close=")">
+            #{image_id}
+        </foreach>
+    </delete>
 
 </mapper>

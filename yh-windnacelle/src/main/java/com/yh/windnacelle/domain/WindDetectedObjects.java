@@ -43,12 +43,12 @@ public class WindDetectedObjects extends BaseEntity
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long confidence;
+    private Double confidence;
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     @JsonProperty("class")
-    private Long className;
+    private Long clazz;
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -116,23 +116,23 @@ public class WindDetectedObjects extends BaseEntity
     {
         return ymax;
     }
-    public void setConfidence(Long confidence)
+    public void setConfidence(Double confidence)
     {
         this.confidence = confidence;
     }
 
-    public Long getConfidence()
+    public Double getConfidence()
     {
         return confidence;
     }
-    public void setClassName(Long className)
+    public void setClazz(Long clazz)
     {
-        this.className = className;
+        this.clazz = clazz;
     }
 
-    public Long getClassName()
+    public Long getClazz()
     {
-        return className;
+        return clazz;
     }
     public void setName(String name)
     {
