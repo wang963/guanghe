@@ -118,4 +118,14 @@ public class WindImagesController extends BaseController
         List<WindImages> windImages = windImagesService.getWindImagesByIds(ids);
         return toAjax(windImagesService.detection(windImages, enhance_Type));
     }
+
+    /**
+     * 调用图片增强接口
+     */
+    @PreAuthorize("@ss.hasPermi('fanmonitor:images:detection')")
+    @GetMapping("/enhance")
+    public AjaxResult enhance(Long[] ids, String enhance_Type){
+        List<WindImages> windImages = windImagesService.getWindImagesByIds(ids);
+        return toAjax(windImagesService.enhance(windImages, enhance_Type));
+    }
 }

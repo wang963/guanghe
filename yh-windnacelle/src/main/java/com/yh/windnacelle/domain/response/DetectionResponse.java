@@ -1,4 +1,6 @@
-package com.yh.windnacelle.domain;
+package com.yh.windnacelle.domain.response;
+
+import com.yh.windnacelle.domain.WindImages;
 
 import java.util.List;
 

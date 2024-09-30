@@ -75,4 +75,6 @@ public interface IWindImagesService
      * @return 结果
      */
     public List<WindImages> getWindImagesByIds(Long[] ids);
+
+    int enhance(List<WindImages> windImages, String enhance_type);
 }

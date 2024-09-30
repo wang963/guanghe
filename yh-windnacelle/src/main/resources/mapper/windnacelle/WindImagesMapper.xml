@@ -75,6 +75,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </foreach>
     </select>
 
+    <select id="getWindImagesById" parameterType="Long" resultMap="WindImagesResult">
+        <include refid="selectWindImagesVo"/>
+        where id = #{id}
+    </select>
+
     <select id="getWindImagesIdByName" parameterType="String" resultType="Long">
         select id from wind_images where image_name = #{imageName}
     </select>
@@ -85,5 +90,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{image_id}
         </foreach>
     </delete>
+
+    <update id="updateImagePahtByName" parameterType="WindImages">
+        update wind_images set image_path = #{imagePath} where image_path like concat('%', #{image})
+    </update>
 
 </mapper>

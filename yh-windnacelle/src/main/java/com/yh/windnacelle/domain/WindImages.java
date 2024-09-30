@@ -34,6 +34,8 @@ public class WindImages extends BaseEntity
 
     private String image;
 
+    private String image_base64;
+
     public List<WindDetectedObjects> getWindDetectedObjectsList() {
         return windDetectedObjectsList;
     }
@@ -48,6 +50,15 @@ public class WindImages extends BaseEntity
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+
+    public String getImage_base64() {
+        return image_base64;
+    }
+
+    public void setImage_base64(String image_base64) {
+        this.image_base64 = image_base64;
     }
 
     /** 创建时间 */

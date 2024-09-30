@@ -64,4 +64,8 @@ public interface WindImagesMapper
     Long getWindImagesIdByName(String imageName);
 
     int deleteWindDetectedObjectsByIds(List<Long> imageIds);
+
+    int updateImagePahtByName(WindImages windImages);
+
+    WindImages getWindImagesById(Long id);
 }
