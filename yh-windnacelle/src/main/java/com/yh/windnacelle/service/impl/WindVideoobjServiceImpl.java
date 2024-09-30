@@ -2,13 +2,15 @@ package com.yh.windnacelle.service.impl;
 
 import java.util.List;
 
-import com.yh.windnacelle.demo.CameraData;
-import com.yh.windnacelle.demo.DetectedObject;
+import com.yh.windnacelle.demo.WindVideoDto;
 import com.yh.windnacelle.domain.VideoDetectionResponse;
-import com.yh.windnacelle.mapper.WindDetectedObjectsMapper;
-import com.yh.windnacelle.mapper.WindVideoobjMapper;
+import com.yh.windnacelle.domain.WindVideoCameraData;
+import com.yh.windnacelle.domain.WindVideoDetectedObject;
+import com.yh.windnacelle.mapper.WindVideoCameraDataMapper;
+import com.yh.windnacelle.mapper.WindVideoDetectedObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.yh.windnacelle.mapper.WindVideoobjMapper;
 import com.yh.windnacelle.domain.WindVideoobj;
 import com.yh.windnacelle.service.IWindVideoobjService;
 import org.springframework.web.client.RestTemplate;
@@ -17,17 +19,18 @@ import org.springframework.web.client.RestTemplate;
  * 视频检测Service业务层处理
  *
  * @author wyy
- * @date 2024-09-18
+ * @date 2024-09-27
  */
 @Service
-public class WindVideoobjServiceImpl implements IWindVideoobjService
-{
+public class WindVideoobjServiceImpl implements IWindVideoobjService {
     @Autowired
     private WindVideoobjMapper windVideoobjMapper;
 
     @Autowired
-    private WindDetectedObjectsMapper windDetectedObjectsMapper;
+    private WindVideoDetectedObjectMapper windVideoDetectedObjectMapper;
 
+    @Autowired
+    private WindVideoCameraDataMapper windVideoCameraDataMapper;
     /**
      * 查询视频检测
      *
@@ -35,8 +38,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 视频检测
      */
     @Override
-    public WindVideoobj selectWindVideoobjById(Long id)
-    {
+    public WindVideoobj selectWindVideoobjById(Long id) {
         return windVideoobjMapper.selectWindVideoobjById(id);
     }
 
@@ -47,8 +49,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 视频检测
      */
     @Override
-    public List<WindVideoobj> selectWindVideoobjList(WindVideoobj windVideoobj)
-    {
+    public List<WindVideoobj> selectWindVideoobjList(WindVideoobj windVideoobj) {
         return windVideoobjMapper.selectWindVideoobjList(windVideoobj);
     }
 
@@ -59,21 +60,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 结果
      */
     @Override
-    public int insertWindVideoobj(WindVideoobj windVideoobj)
-    {
-        String url = "http://47.94.239.117:80/videoObjDetection/None/Images";
-        RestTemplate restTemplate = new RestTemplate();
-        VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoobj, VideoDetectionResponse.class);
-        List<List<CameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();
-        windVideoobj.setTimeStamp(cameraDataList.get(0).get(0).getTime_stamp().toString());
-        List<CameraData> cameraData = cameraDataList.remove(0);
-        for (CameraData cameraData1:cameraData){
-            List<DetectedObject> objects = cameraData1.getObjects();
-        }
-
-
-//        List<WindDetectedObjects> windDetectedObjectsList = videoDetectionResponse.getWindDetectedObjectsList();
-//        windDetectedObjectsMapper.insertWindDetectedObjectsBatch(windDetectedObjectsList);
+    public int insertWindVideoobj(WindVideoobj windVideoobj) {
         return windVideoobjMapper.insertWindVideoobj(windVideoobj);
     }
 
@@ -84,8 +71,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 结果
      */
     @Override
-    public int updateWindVideoobj(WindVideoobj windVideoobj)
-    {
+    public int updateWindVideoobj(WindVideoobj windVideoobj) {
         return windVideoobjMapper.updateWindVideoobj(windVideoobj);
     }
 
@@ -96,8 +82,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 结果
      */
     @Override
-    public int deleteWindVideoobjByIds(Long[] ids)
-    {
+    public int deleteWindVideoobjByIds(Long[] ids) {
         return windVideoobjMapper.deleteWindVideoobjByIds(ids);
     }
 
@@ -108,8 +93,57 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService
      * @return 结果
      */
     @Override
-    public int deleteWindVideoobjById(Long id)
-    {
+    public int deleteWindVideoobjById(Long id) {
         return windVideoobjMapper.deleteWindVideoobjById(id);
     }
+
+    /**
+     * 视频检测
+     *
+     * @param windVideoDto
+     */
+    @Override
+    public int videoDetection(WindVideoDto windVideoDto) {
+        String url = "http://47.94.239.117:80/videoObjDetection/None/Bboxs";
+        RestTemplate restTemplate = new RestTemplate();
+        VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoDto, VideoDetectionResponse.class);
+        List<List<WindVideoCameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();
+        String time_stamp = cameraDataList.get(0).get(0).getTime_stamp().toString();
+        List<WindVideoCameraData> windVideoCameraData = cameraDataList.remove(0);
+
+        for (WindVideoCameraData windVideoCameraData1 : windVideoCameraData) {
+            List<WindVideoDetectedObject> objects = windVideoCameraData1.getObjects();
+            windVideoCameraData1.setTimeStampDba(time_stamp);
+            windVideoDetectedObjectMapper.insertBatch(objects);
+        }
+        windVideoCameraDataMapper.insertBatch(windVideoCameraData);
+
+        return 0;
+    }
+
+
+    /**
+     * 视频检测
+     *
+     * @param windVideoDto
+     */
+//    @Override
+    public int videoEnhanced(WindVideoDto windVideoDto) {
+        String url = "http://47.94.239.117:80/videoObjDetection/None/Bboxs";
+        RestTemplate restTemplate = new RestTemplate();
+        VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoDto, VideoDetectionResponse.class);
+        List<List<WindVideoCameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();
+        String time_stamp = cameraDataList.get(0).get(0).getTime_stamp().toString();
+        List<WindVideoCameraData> windVideoCameraData = cameraDataList.remove(0);
+
+        for (WindVideoCameraData windVideoCameraData1 : windVideoCameraData) {
+            List<WindVideoDetectedObject> objects = windVideoCameraData1.getObjects();
+            windVideoCameraData1.setTimeStampDba(time_stamp);
+            windVideoDetectedObjectMapper.insertBatch(objects);
+        }
+        windVideoCameraDataMapper.insertBatch(windVideoCameraData);
+
+        return 0;
+    }
+
 }

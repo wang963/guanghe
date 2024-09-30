@@ -6,7 +6,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="WindVideoobj" id="WindVideoobjResult">
         <result property="id"    column="id"    />
-        <result property="frameId"    column="frame_id"    />
         <result property="videoPath"    column="video_path"    />
         <result property="cameraId"    column="camera_id"    />
         <result property="detectTime"    column="detect_time"    />
@@ -15,17 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectWindVideoobjVo">
-        select v.id, v.frame_id, v.video_path, v.camera_id, v.detect_time, v.save_video, v.time_stamp, w.camera_name as cameraName
-        from wind_videoobj v
-        left join wind_camera w
-        on v.camera_id = w.camera_id
+        select id, video_path, camera_id, detect_time, save_video, time_stamp from wind_videoobj
     </sql>
 
     <select id="selectWindVideoobjList" parameterType="WindVideoobj" resultMap="WindVideoobjResult">
         <include refid="selectWindVideoobjVo"/>
         <where>
-            <if test="cameraId != null "> and camera_id = #{cameraId}</if>
-            <if test="saveVideo != null  and saveVideo != ''"> and save_video = #{saveVideo}</if>
+            <if test="cameraId != null  and cameraId != ''"> and camera_id = #{cameraId}</if>
         </where>
     </select>
 
@@ -37,7 +32,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertWindVideoobj" parameterType="WindVideoobj" useGeneratedKeys="true" keyProperty="id">
         insert into wind_videoobj
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="frameId != null">frame_id,</if>
             <if test="videoPath != null">video_path,</if>
             <if test="cameraId != null">camera_id,</if>
             <if test="detectTime != null">detect_time,</if>
@@ -45,7 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="timeStamp != null">time_stamp,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="frameId != null">#{frameId},</if>
             <if test="videoPath != null">#{videoPath},</if>
             <if test="cameraId != null">#{cameraId},</if>
             <if test="detectTime != null">#{detectTime},</if>
@@ -57,7 +50,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateWindVideoobj" parameterType="WindVideoobj">
         update wind_videoobj
         <trim prefix="SET" suffixOverrides=",">
-            <if test="frameId != null">frame_id = #{frameId},</if>
             <if test="videoPath != null">video_path = #{videoPath},</if>
             <if test="cameraId != null">camera_id = #{cameraId},</if>
             <if test="detectTime != null">detect_time = #{detectTime},</if>

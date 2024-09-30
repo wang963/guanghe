@@ -1,4 +1,6 @@
-package com.yh.windnacelle.demo;
+package com.yh.windnacelle.domain;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,27 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class DetectedObject {
+public class WindVideoDetectedObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private int xmin;
     private int xmax;
     private int ymin;
     private int ymax;
     private double confidence;
-    private int classId; // class is a reserved keyword in Java
+    @JsonProperty("class")
+    private int clazz;
     private String name;
 
-    // Getters and Setters
+    private int frameID;
 
-    public Long getId() {
+    public int getFrameID() {
+        return frameID;
+    }
+
+    public void setFrameID(int frameID) {
+        this.frameID = frameID;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -70,12 +81,12 @@ public class DetectedObject {
         this.confidence = confidence;
     }
 
-    public int getClassId() {
-        return classId;
+    public int getClazz() {
+        return clazz;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClazz(int clazz) {
+        this.clazz = clazz;
     }
 
     public String getName() {

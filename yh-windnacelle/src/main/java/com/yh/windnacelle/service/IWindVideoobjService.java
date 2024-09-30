@@ -1,13 +1,15 @@
 package com.yh.windnacelle.service;
 
 import java.util.List;
+
+import com.yh.windnacelle.demo.WindVideoDto;
 import com.yh.windnacelle.domain.WindVideoobj;
 
 /**
  * 视频检测Service接口
  *
  * @author wyy
- * @date 2024-09-18
+ * @date 2024-09-27
  */
 public interface IWindVideoobjService
 {
@@ -58,4 +60,11 @@ public interface IWindVideoobjService
      * @return 结果
      */
     public int deleteWindVideoobjById(Long id);
+
+    /**
+     * 视频检测
+     *
+     * @param
+     */
+    public int videoDetection(WindVideoDto windVideoDto);
 }

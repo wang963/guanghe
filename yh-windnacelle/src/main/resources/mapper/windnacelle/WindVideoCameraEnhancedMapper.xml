@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yh.windnacelle.mapper.WindVideoCameraEnhancedMapper">
+
+    <resultMap id="WindVideoCameraEnhancedResult" type="com.yh.windnacelle.domain.WindVideoCameraEnhanced">
+        <id column="id" property="id"/>
+        <result column="camera_ID" property="camera_ID"/>
+        <result column="frameraId" property="frameraId"/>
+        <result column="timeStamp" property="timeStamp"/>
+        <result column="imgPath" property="imgPath"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.yh.windnacelle.domain.WindVideoCameraEnhanced">
+        INSERT INTO wind_video_camera_enhanced (camera_ID, frameraId, timeStamp, imgPath)
+        VALUES (#{camera_ID}, #{frameraId}, #{timeStamp}, #{imgPath})
+    </insert>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="WindVideoCameraEnhancedResult">
+        SELECT * FROM wind_video_camera_enhanced WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="WindVideoCameraEnhancedResult">
+        SELECT * FROM wind_video_camera_enhanced
+    </select>
+
+    <update id="update" parameterType="com.yh.windnacelle.domain.WindVideoCameraEnhanced">
+        UPDATE wind_video_camera_enhanced
+        SET camera_ID = #{camera_ID}, frameraId = #{frameraId}, timeStamp = #{timeStamp}, imgPath = #{imgPath}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM wind_video_camera_enhanced WHERE id = #{id}
+    </delete>
+
+</mapper>

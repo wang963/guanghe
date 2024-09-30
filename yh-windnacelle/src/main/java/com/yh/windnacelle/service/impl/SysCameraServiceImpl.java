@@ -3,7 +3,6 @@ package com.yh.windnacelle.service.impl;
 import java.util.List;
 
 import com.yh.windnacelle.domain.ApiResponse;
-import com.yh.windnacelle.domain.WindCamera;
 import com.yh.windnacelle.mapper.WindCameraMapper;
 import com.yh.windnacelle.utils.Utils;
 import com.yh.windnacelle.mapper.SysCameraMapper;

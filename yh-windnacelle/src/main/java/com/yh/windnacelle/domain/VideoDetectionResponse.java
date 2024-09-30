@@ -1,17 +1,15 @@
 package com.yh.windnacelle.domain;
 
-import com.yh.windnacelle.demo.CameraData;
-
 import java.util.List;
 
 public class VideoDetectionResponse {
-    private List<List<CameraData>> cameraDataList;
+    private List<List<WindVideoCameraData>> cameraDataList;
 
-    public List<List<CameraData>> getCameraDataList() {
+    public List<List<WindVideoCameraData>> getCameraDataList() {
         return cameraDataList;
     }
 
-    public void setCameraDataList(List<List<CameraData>> cameraDataList) {
+    public void setCameraDataList(List<List<WindVideoCameraData>> cameraDataList) {
         this.cameraDataList = cameraDataList;
     }
 }

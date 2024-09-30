@@ -1,12 +1,10 @@
-package com.yh.windnacelle.demo;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.yh.windnacelle.domain;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class CameraData {
+public class WindVideoCameraData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,14 +13,23 @@ public class CameraData {
     @ElementCollection
     private List<String> time_stamp;
 
+    private String timeStampDba;
+
     private String cameraID;
     private int frameID;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "camera_data_id")
-    private List<DetectedObject> objects;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // 添加此注解
+    private List<WindVideoDetectedObject> objects;
 
     // Getters and Setters
+
+
+    public String getTimeStampDba() {
+        return timeStampDba;
+    }
+
+    public void setTimeStampDba(String timeStampDba) {
+        this.timeStampDba = timeStampDba;
+    }
 
     public Long getId() {
         return id;
@@ -56,11 +63,11 @@ public class CameraData {
         this.frameID = frameID;
     }
 
-    public List<DetectedObject> getObjects() {
+    public List<WindVideoDetectedObject> getObjects() {
         return objects;
     }
 
-    public void setObjects(List<DetectedObject> objects) {
+    public void setObjects(List<WindVideoDetectedObject> objects) {
         this.objects = objects;
     }
 }

@@ -5,15 +5,15 @@ import com.yh.windnacelle.domain.WindVideoobj;
 
 /**
  * 视频检测Mapper接口
- *
+ * 
  * @author wyy
- * @date 2024-09-18
+ * @date 2024-09-27
  */
-public interface WindVideoobjMapper
+public interface WindVideoobjMapper 
 {
     /**
      * 查询视频检测
-     *
+     * 
      * @param id 视频检测主键
      * @return 视频检测
      */
@@ -21,7 +21,7 @@ public interface WindVideoobjMapper
 
     /**
      * 查询视频检测列表
-     *
+     * 
      * @param windVideoobj 视频检测
      * @return 视频检测集合
      */
@@ -29,7 +29,7 @@ public interface WindVideoobjMapper
 
     /**
      * 新增视频检测
-     *
+     * 
      * @param windVideoobj 视频检测
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface WindVideoobjMapper
 
     /**
      * 修改视频检测
-     *
+     * 
      * @param windVideoobj 视频检测
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface WindVideoobjMapper
 
     /**
      * 删除视频检测
-     *
+     * 
      * @param id 视频检测主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface WindVideoobjMapper
 
     /**
      * 批量删除视频检测
-     *
+     * 
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */

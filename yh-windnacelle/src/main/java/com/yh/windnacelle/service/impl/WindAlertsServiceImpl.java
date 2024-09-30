@@ -91,7 +91,7 @@ public class WindAlertsServiceImpl implements IWindAlertsService
                 }
             }
         }
-        return 1;
+        return 0;
     }
 
     /**
