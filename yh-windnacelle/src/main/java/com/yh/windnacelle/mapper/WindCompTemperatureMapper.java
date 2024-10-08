@@ -44,6 +44,14 @@ public interface WindCompTemperatureMapper
     public int updateWindCompTemperature(WindCompTemperature windCompTemperature);
 
     /**
+     * 批量修改风机部件温度
+     *
+     * @param windCompTemperatures
+     * @return
+     */
+    public int updateWindCompTemperatureBatch(List<WindCompTemperature> windCompTemperatures);
+
+    /**
      * 删除风机部件温度
      *
      * @param id 风机部件温度主键

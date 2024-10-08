@@ -73,6 +73,23 @@
         where id = #{id}
     </update>
 
+    <update id="updateWindCompTemperatureBatch" parameterType="java.util.List">
+        replace into wind_comp_temperature(id, comp_name, temperature, unit, time, alarm, created_time, updated_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.compName},
+            #{item.temperature},
+            #{item.unit},
+            #{item.time},
+            #{item.alarm},
+            #{item.createdTime},
+            #{item.updatedTime}
+            )
+        </foreach>
+    </update>
+
     <delete id="deleteWindCompTemperatureById" parameterType="Long">
         delete from wind_comp_temperature where id = #{id}
     </delete>

@@ -68,6 +68,11 @@ public class WindCompTemperatureServiceImpl implements IWindCompTemperatureServi
         return windCompTemperatureMapper.updateWindCompTemperature(windCompTemperature);
     }
 
+    @Override
+    public int updateWindCompTemperatureBatch(List<WindCompTemperature> windCompTemperatures) {
+        return windCompTemperatureMapper.updateWindCompTemperatureBatch(windCompTemperatures);
+    }
+
     /**
      * 批量删除风机部件温度
      *

@@ -45,6 +45,14 @@ public interface IWindCompTemperatureService
     public int updateWindCompTemperature(WindCompTemperature windCompTemperature);
 
     /**
+     * 批量修改风机部件温度
+     *
+     * @param windCompTemperatures
+     * @return
+     */
+    public int updateWindCompTemperatureBatch(List<WindCompTemperature> windCompTemperatures);
+
+    /**
      * 批量删除风机部件温度
      *
      * @param ids 需要删除的风机部件温度主键集合
