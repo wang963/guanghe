@@ -1,10 +1,13 @@
 package com.yh.windnacelle.domain;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.yh.common.annotation.Excel;
@@ -24,10 +27,10 @@ public class WindAlerts extends BaseEntity
     private int id;
 
     /** 告警时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "告警时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "告警时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("alert_time")
-    private Date alertTime;
+    private LocalDateTime alertTime;
 
     /** 设备ID */
     @JsonProperty("device_id")
@@ -84,12 +87,12 @@ public class WindAlerts extends BaseEntity
     {
         return id;
     }
-    public void setAlertTime(Date alertTime)
+    public void setAlertTime(LocalDateTime alertTime)
     {
         this.alertTime = alertTime;
     }
 
-    public Date getAlertTime()
+    public LocalDateTime getAlertTime()
     {
         return alertTime;
     }

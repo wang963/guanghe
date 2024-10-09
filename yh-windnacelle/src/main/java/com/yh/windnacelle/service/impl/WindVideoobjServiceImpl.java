@@ -8,6 +8,7 @@ import com.yh.windnacelle.domain.WindVideoCameraData;
 import com.yh.windnacelle.domain.WindVideoDetectedObject;
 import com.yh.windnacelle.mapper.WindVideoCameraDataMapper;
 import com.yh.windnacelle.mapper.WindVideoDetectedObjectMapper;
+import com.yh.windnacelle.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yh.windnacelle.mapper.WindVideoobjMapper;
@@ -31,6 +32,9 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService {
 
     @Autowired
     private WindVideoCameraDataMapper windVideoCameraDataMapper;
+
+    @Autowired
+    private Utils utils;
     /**
      * 查询视频检测
      *
@@ -104,7 +108,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService {
      */
     @Override
     public int videoDetection(WindVideoDto windVideoDto) {
-        String url = "http://47.94.239.117:80/videoObjDetection/None/Bboxs";
+        String url = utils.getInfraredPrefixAddress() +"/videoObjDetection/None/Bboxs";
         RestTemplate restTemplate = new RestTemplate();
         VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoDto, VideoDetectionResponse.class);
         List<List<WindVideoCameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();
@@ -129,7 +133,7 @@ public class WindVideoobjServiceImpl implements IWindVideoobjService {
      */
 //    @Override
     public int videoEnhanced(WindVideoDto windVideoDto) {
-        String url = "http://47.94.239.117:80/videoObjDetection/None/Bboxs";
+        String url = utils.getInfraredPrefixAddress() +"/videoObjDetection/None/Bboxs";
         RestTemplate restTemplate = new RestTemplate();
         VideoDetectionResponse videoDetectionResponse = restTemplate.postForObject(url, windVideoDto, VideoDetectionResponse.class);
         List<List<WindVideoCameraData>> cameraDataList = videoDetectionResponse.getCameraDataList();

@@ -109,7 +109,7 @@ public class WindVideoobjController extends BaseController
      */
     @PostMapping("/videoDetection")
     public AjaxResult videoDetection(@RequestBody WindVideoDto windVideoDto){
-
+        windVideoobjService.videoDetection(windVideoDto);
         return toAjax(1);
     }
 }

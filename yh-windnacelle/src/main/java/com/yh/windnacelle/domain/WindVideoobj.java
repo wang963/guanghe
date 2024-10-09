@@ -19,7 +19,7 @@ public class WindVideoobj extends BaseEntity
     private Long id;
 
     /** 视频地址 */
-    @Excel(name = "视频地址")
+    @Excel(name = "视频流地址")
     private String videoPath;
 
     /** 监控ID */
@@ -36,6 +36,16 @@ public class WindVideoobj extends BaseEntity
 
     /** $column.columnComment */
     private String timeStamp;
+
+    private String cameraName;
+
+    public String getCameraName() {
+        return cameraName;
+    }
+
+    public void setCameraName(String cameraName) {
+        this.cameraName = cameraName;
+    }
 
     public void setId(Long id)
     {
