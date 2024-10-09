@@ -2,6 +2,7 @@ package com.yh.windnacelle.service;
 
 import java.util.List;
 import com.yh.windnacelle.domain.WindAlerts;
+import com.yh.windnacelle.domain.WindAlertsDto;
 
 /**
  * 告警信息Service接口
@@ -26,6 +27,14 @@ public interface IWindAlertsService
      * @return 告警信息集合
      */
     public List<WindAlerts> selectWindAlertsList(WindAlerts windAlerts);
+
+    /**
+     * 查询告警信息列表(包含风机信息)
+     *
+     * @param windAlertsDto 告警信息
+     * @return 告警信息集合
+     */
+    public List<WindAlertsDto> selectWindAlertsDtoList(WindAlertsDto windAlertsDto);
 
     /**
      * 新增告警信息
