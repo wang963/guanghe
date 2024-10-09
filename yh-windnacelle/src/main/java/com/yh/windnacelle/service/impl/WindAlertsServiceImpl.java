@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.yh.windnacelle.domain.WindAlertObjects;
+import com.yh.windnacelle.domain.WindAlertsDto;
 import com.yh.windnacelle.mapper.WindAlertObjectsMapper;
 import com.yh.windnacelle.domain.WindAlerts;
 import com.yh.windnacelle.mapper.WindAlertsMapper;
@@ -59,6 +60,11 @@ public class WindAlertsServiceImpl implements IWindAlertsService
     {
         List<WindAlerts> windAlerts1 = windAlertsMapper.selectWindAlertsList(windAlerts);
         return windAlerts1;
+    }
+
+    @Override
+    public List<WindAlertsDto> selectWindAlertsDtoList(WindAlertsDto windAlertsDto) {
+        return windAlertsMapper.selectWindAlertsDtoList(windAlertsDto);
     }
 
     /**

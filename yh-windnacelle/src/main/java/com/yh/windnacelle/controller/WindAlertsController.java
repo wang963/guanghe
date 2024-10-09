@@ -5,6 +5,7 @@ import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yh.windnacelle.domain.WindAlerts;
+import com.yh.windnacelle.domain.WindAlertsDto;
 import com.yh.windnacelle.service.IWindAlertsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,18 @@ public class WindAlertsController extends BaseController
     {
         startPage();
         List<WindAlerts> list = windAlertsService.selectWindAlertsList(windAlerts);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询告警信息(包含风机信息)列表
+     */
+    @PreAuthorize("@ss.hasPermi('fanmonitor:alerts:list')")
+    @GetMapping("/listDto")
+    public TableDataInfo listDto(WindAlertsDto windAlertsDto)
+    {
+        startPage();
+        List<WindAlertsDto> list = windAlertsService.selectWindAlertsDtoList(windAlertsDto);
         return getDataTable(list);
     }
 

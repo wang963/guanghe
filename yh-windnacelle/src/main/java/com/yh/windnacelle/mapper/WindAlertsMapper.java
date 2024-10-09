@@ -2,6 +2,7 @@ package com.yh.windnacelle.mapper;
 
 import java.util.List;
 import com.yh.windnacelle.domain.WindAlerts;
+import com.yh.windnacelle.domain.WindAlertsDto;
 
 /**
  * 告警信息Mapper接口
@@ -58,4 +59,6 @@ public interface WindAlertsMapper
      * @return 结果
      */
     public int deleteWindAlertsByIds(Long[] ids);
+
+    List<WindAlertsDto> selectWindAlertsDtoList(WindAlertsDto windAlertsDto);
 }
